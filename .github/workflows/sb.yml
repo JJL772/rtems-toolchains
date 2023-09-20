@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: ['powerpc', 'arm', 'i386', 'm68k']
+        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'riscv']
     steps:
       - uses: actions/checkout@v2
         with:
