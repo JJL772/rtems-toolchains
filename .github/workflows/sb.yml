@@ -23,7 +23,7 @@ jobs:
       - name: Package Toolchain
         run: |
           cd toolchain
-          tar -cfz x86_64-rtems6-${{ matrix.arch }}.tar.gz ./*
+          tar -z -cf x86_64-rtems6-${{ matrix.arch }}.tar.gz ./*
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
