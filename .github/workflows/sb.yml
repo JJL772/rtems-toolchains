@@ -1,0 +1,31 @@
+
+name: RTEMS Source Builder
+
+on: [push]
+
+jobs:
+  sb:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: ['powerpc', 'arm', 'i386', 'm68k']
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 gcc g++ llvm-dev
+      - name: Build Toolchain
+        run: |
+          ./rtems-source-builder/source-builder/sb-set-builder --prefix "toolchain" 6/rtems-${{ matrix.arch }}.bset --log rsb.log
+      - name: Package Toolchain
+        run: |
+          cd toolchain
+          tar -cfz x86_64-rtems6-${{ matrix.arch }}.tar.gz ./*
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: x86_64-rtems6-${{ matrix.arch }}.tar.gz
+          path: ./toolchain/x86_64-rtems6-${{ matrix.arch }}.tar.gz
