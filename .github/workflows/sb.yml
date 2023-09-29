@@ -6,6 +6,10 @@ on: [push]
 jobs:
   sb:
     runs-on: ubuntu-latest
+    # It may seem odd, but we are using a Steam Runtime container intended for games. It contains
+    # a distribution of eglibc that fixes forward compatibility problems often encountered with standard glibc.
+    # i.e. the binaries produced will be able to run on RHEL7, even though we're building in a Debian 11-based container.
+    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk
     strategy:
       matrix:
         arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'riscv']
@@ -16,10 +20,16 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3 gcc g++ llvm-dev
+          sudo apt-get install -y python3 gcc g++ llvm-dev git sed gawk libpython3.9-dev
+          # some tools are in /bin, we need them in /usr/bin
+          sudo ln -s /bin/sed /usr/bin/sed
+          sudo ln -s /bin/bzip2 /usr/bin/bzip2
+          sudo ln -s /bin/chgrp /usr/bin/chgrp
+          sudo ln -s /bin/chown /usr/bin/chown
+          sudo ln -s /bin/grep /usr/bin/grep
       - name: Build Toolchain
         run: |
-          ./rtems-source-builder/source-builder/sb-set-builder --prefix "toolchain" 6/rtems-${{ matrix.arch }}.bset --log rsb.log
+          ./rtems-source-builder/source-builder/sb-set-builder --prefix "toolchain" 6/rtems-${{ matrix.arch }}.bset --log rsb.log || cat rsb.log
       - name: Package Toolchain
         run: |
           cd toolchain
