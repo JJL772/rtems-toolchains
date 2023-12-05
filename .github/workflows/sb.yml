@@ -5,7 +5,7 @@ on: [push]
 
 jobs:
   sb:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted # Need this because these runs take up quite a bit of disk space.
     # It may seem odd, but we are using a Steam Runtime container intended for games. It contains
     # a distribution of eglibc that fixes forward compatibility problems often encountered with standard glibc.
     # i.e. the binaries produced will be able to run on RHEL7, even though we're building in a Debian 11-based container.
