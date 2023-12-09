@@ -1,0 +1,29 @@
+
+name: RTEMS Toolchain Docker Container
+
+on: [push]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'riscv']
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: docker/setup-buildx-action@v3
+      - name: Login to Dockerhub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: rtems-6-${{ matrix.arch }}:latest
+          build-args: |
+            ${{ matrix.arch }}
+
