@@ -23,7 +23,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: rtems-6-${{ matrix.arch }}:latest
+          tags: jjl77/rtems-6-toolchains:${{ matrix.arch }}
           build-args: |
-            ${{ matrix.arch }}
+            arch=${{ matrix.arch }}
 
