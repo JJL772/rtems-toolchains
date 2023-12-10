@@ -1,7 +1,10 @@
 
 name: RTEMS Toolchain Docker Container
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'main'
 
 jobs:
   docker-build:

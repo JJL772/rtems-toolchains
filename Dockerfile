@@ -8,5 +8,5 @@ RUN apt-get install -y flex bison bzip2 unzip make xz-utils
 COPY ./rtems-source-builder /sb
 
 # Compile the thing.
-RUN /sb/source-builder/sb-set-builder --prefix "/usr" 6/rtems-${arch}.bset --log rsb.log || cat rsb.log
+RUN /sb/source-builder/sb-set-builder --prefix "/usr" 6/rtems-${arch}.bset --log rsb.log
 
