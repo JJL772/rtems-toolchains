@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - directory: /
+    open-pull-requests-limit: 3
+    package-ecosystem: "gitsubmodule"
+    rebase-strategy: auto
+    allow:
+      - dependency-name: "rtems-source-builder"
+    schedule:
+      interval: "daily"
+
