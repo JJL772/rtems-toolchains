@@ -13,6 +13,7 @@ jobs:
       contents: read
       packages: write
     strategy:
+      fail-fast: false
       matrix:
         arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'riscv', 'x86_64']
     steps:
