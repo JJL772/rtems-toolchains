@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'riscv', 'x86_64']
+        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'riscv', 'sparc', 'sparc64', 'x86_64', 'mips', 'bfin', 'lm32', 'microblaze', 'sh', 'v850', 'moxie', 'nios2', 'or1k']
     steps:
       - uses: actions/checkout@v2
         with:
