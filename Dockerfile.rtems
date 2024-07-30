@@ -1,0 +1,10 @@
+
+ARG ARCH
+FROM ghcr.io/jjl772/rtems-6-toolchains:${ARCH}
+
+RUN apt-get update && apt-get install -y ca-certificates
+
+COPY . /sb
+
+ARG ARCH
+RUN /sb/setup-rtems.bash -a ${ARCH} -p /usr/local -c && rm -rf /sb

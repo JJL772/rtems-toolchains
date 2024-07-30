@@ -7,7 +7,7 @@ on:
       - 'main'
 
 jobs:
-  docker-build:
+  docker-toolchain-build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,7 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         version: ['6']
-        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'riscv', 'sparc', 'sparc64', 'x86_64', 'mips', 'bfin', 'lm32', 'microblaze', 'sh', 'v850', 'moxie', 'nios2', 'or1k']
+        # NOTE: riscv and microblaze fail currently. Excluding them from the build as a result
+        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'sparc', 'sparc64', 'x86_64', 'mips', 'bfin', 'lm32', 'sh', 'v850', 'moxie', 'nios2', 'or1k']
     steps:
       - uses: actions/checkout@v2
         with:
@@ -35,4 +36,31 @@ jobs:
           build-args: |
             arch=${{ matrix.arch }}
             version=${{ matrix.version }}
-
+  docker-rtems-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['6']
+        # NOTE: riscv and microblaze fail currently. Excluding them from the build as a result
+        arch: ['powerpc', 'i386', 'm68k']
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Login to GitHub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ghcr.io/jjl772/rtems-6:${{ matrix.arch }}
+          build-args: |
+            ARCH=${{ matrix.arch }}
