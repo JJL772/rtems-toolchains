@@ -11,6 +11,6 @@ COPY . /sb
 RUN cd ./sb/rtems-source-builder && patch -p1 < ../gmp-url.patch && cd ..
 
 # Compile the thing.
-RUN cd /sb && /sb/rtems-source-builder/source-builder/sb-set-builder --prefix "/usr" ${version}/rtems-${arch}.bset --macros /sb/macros.mc && \
+RUN cd /sb && /sb/rtems-source-builder/source-builder/sb-set-builder --prefix "/usr/local" ${version}/rtems-${arch}.bset --macros /sb/macros.mc && \
 	cd / && rm -rf /sb
 
