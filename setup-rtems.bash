@@ -96,3 +96,22 @@ if [ $CLEAN_AFTER_INSTALL -eq 1 ]; then
 	rm -rf rtems-libbsd
 fi
 
+############# RTEMS net services ############# 
+
+if [ ! -d rtems-net-services ]; then
+	git clone https://gitlab.rtems.org/rtems/pkg/rtems-net-services.git --recursive --depth=1
+	cd rtems-net-services
+else
+	cd rtems-net-services
+	git submodule update --init --recursive
+fi
+
+./waf configure --rtems-bsps="$BSPS" --rtems-tools="$PREFIX" --prefix="$PREFIX"
+
+./waf build install
+
+cd ..
+if [ $CLEAN_AFTER_INSTALL -eq 1 ]; then
+	rm -rf rtems-net-services
+fi
+
