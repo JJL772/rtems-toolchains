@@ -18,6 +18,10 @@ while test $# -gt 0; do
 			CLEAN_AFTER_INSTALL=1
 			shift
 			;;
+		-t)
+			TOOLS="$2"
+			shift 2
+			;;
 		*)
 			echo "Unknown arg $1"
 			exit 1
@@ -27,6 +31,7 @@ done
 
 [ -z "$PREFIX" ] && echo "Missing -p argument for prefix" && exit 1
 [ -z "$ARCH" ] && echo "Missing -a argument for arch" && exit 1
+[ -z "$TOOLS" ] && TOOLS="$PREFIX"
 
 echo "Using PREFIX=$PREFIX"
 export PATH="$PREFIX:$PATH"
@@ -51,8 +56,10 @@ echo "Targeting BSPS: $BSPS"
 ############# RTEMS kernel ############# 
 
 if [ ! -d rtems ]; then
-	git clone https://gitlab.rtems.org/rtems/rtos/rtems.git --recursive --depth=1
+	git clone https://gitlab.rtems.org/rtems/rtos/rtems.git --recursive
 	cd rtems
+	# HACK: RTEMS upstream broke waf install (Aug 08, 2024)
+	git checkout e13236123ca8a6d7934b75aee03ba0c8bfb268ba
 else
 	cd rtems
 	git clean -ffdx .
@@ -65,6 +72,9 @@ sed -i 's/RTEMS_POSIX_API = False/RTEMS_POSIX_API = True/g' config.ini
 
 # Enable SMP for compatible BSPs
 sed -i 's/RTEMS_SMP = False/RTEMS_SMP = True/g' config.ini
+
+# Disable samples
+sed -i 's/BUILD_SAMPLES = True/BUILD_SAMPLES = True/g' config.ini
 
 ./waf configure --rtems-bsps="$BSPS" --prefix="$PREFIX"
 
@@ -79,7 +89,7 @@ fi
 
 if [ ! -d rtems-libbsd ]; then
 	# NOTE: Using shallow clone here because the .git folder in rtems-libbsd is 3.2G(!!!)
-	git clone https://gitlab.rtems.org/rtems/pkg/rtems-libbsd.git --recursive --depth=1
+	git clone https://gitlab.rtems.org/rtems/pkg/rtems-libbsd.git --recursive --depth=1 -b 6-freebsd-12
 	cd rtems-libbsd
 else
 	cd rtems-libbsd
@@ -87,7 +97,7 @@ else
 	git submodule update --init --recursive
 fi
 
-./waf configure --rtems-bsps="$BSPS" --rtems-tools="$PREFIX" --prefix="$PREFIX" --buildset buildset/default.ini
+./waf configure --rtems-bsps="$BSPS" --rtems-tools="$TOOLS" --prefix="$PREFIX" --buildset buildset/default.ini
 
 ./waf build install
 
@@ -106,7 +116,7 @@ else
 	git submodule update --init --recursive
 fi
 
-./waf configure --rtems-bsps="$BSPS" --rtems-tools="$PREFIX" --prefix="$PREFIX"
+./waf configure --rtems-bsps="$BSPS" --rtems-tools="$TOOLS" --rtems="$PREFIX" --prefix="$PREFIX"
 
 ./waf build install
 
