@@ -7,4 +7,5 @@ RUN apt-get update && apt-get install -y ca-certificates
 COPY . /sb
 
 ARG ARCH
-RUN /sb/setup-rtems.bash -a ${ARCH} -p /usr/local -c && rm -rf /sb
+ARG VERSION
+RUN /sb/setup-rtems.bash -a ${ARCH} -p /opt/rtems/${VERSION} -c && rm -rf /sb

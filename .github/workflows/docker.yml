@@ -69,19 +69,22 @@ jobs:
             ARCH=${{ matrix.arch }}
   tarball-publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ['6']
     steps:
       - uses: actions/checkout@v2
       - name: Download tarballs
         # FIXME: m68k fails earlier
         run: |
-          ./get-tarball.sh -t powerpc
-          ./get-tarball.sh -t i386
+          ./get-tarball.sh -v ${{ matrix.version }} -t powerpc
+          ./get-tarball.sh -v ${{ matrix.version }} -t i386
       - name: Draft Release
         uses: softprops/action-gh-release@v2
         with:
-          name: RTEMS 6 Toolchains
+          name: RTEMS ${{ matrix.version }} Toolchains
           files: |
-            rtems-6-powerpc.tar.gz
-            rtems-6-i386.tar.gz
+            rtems-${{ matrix.version }}-powerpc.tar.gz
+            rtems-${{ matrix.version }}-i386.tar.gz
           draft: true
 
