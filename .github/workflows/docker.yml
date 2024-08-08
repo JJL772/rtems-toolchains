@@ -46,7 +46,6 @@ jobs:
       fail-fast: false
       matrix:
         version: ['6']
-        # NOTE: riscv and microblaze fail currently. Excluding them from the build as a result
         arch: ['powerpc', 'i386', 'm68k']
     steps:
       - uses: actions/checkout@v2
@@ -66,3 +65,25 @@ jobs:
           tags: ghcr.io/jjl772/rtems-6:${{ matrix.arch }}
           build-args: |
             ARCH=${{ matrix.arch }}
+  tarball-publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: ['powerpc', 'i386', 'm68k']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download tarballs
+        run: |
+          ./get-tarball -t powerpc
+          ./get-tarball -t i386
+          ./get-tarball -t m68k
+      - name: Draft Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: RTEMS 6 Toolchains
+          files: |
+            rtems-6-powerpc.tar.gz
+            rtems-6-i386.tar.gz
+            rtems-6-m68k.tar.gz
+          draft: true
+
