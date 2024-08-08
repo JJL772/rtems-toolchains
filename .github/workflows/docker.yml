@@ -74,8 +74,8 @@ jobs:
       - name: Download tarballs
         # FIXME: m68k fails earlier
         run: |
-          ./get-tarball -t powerpc
-          ./get-tarball -t i386
+          ./get-tarball.sh -t powerpc
+          ./get-tarball.sh -t i386
       - name: Draft Release
         uses: softprops/action-gh-release@v2
         with:
