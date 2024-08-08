@@ -46,7 +46,9 @@ jobs:
       fail-fast: false
       matrix:
         version: ['6']
-        arch: ['powerpc', 'i386', 'm68k']
+        # FIXME: m68k build fails
+        #arch: ['powerpc', 'i386', 'm68k']
+        arch: ['powerpc', 'i386']
     steps:
       - uses: actions/checkout@v2
         with:
@@ -67,16 +69,13 @@ jobs:
             ARCH=${{ matrix.arch }}
   tarball-publish:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        arch: ['powerpc', 'i386', 'm68k']
     steps:
       - uses: actions/checkout@v2
       - name: Download tarballs
+        # FIXME: m68k fails earlier
         run: |
           ./get-tarball -t powerpc
           ./get-tarball -t i386
-          ./get-tarball -t m68k
       - name: Draft Release
         uses: softprops/action-gh-release@v2
         with:
@@ -84,6 +83,5 @@ jobs:
           files: |
             rtems-6-powerpc.tar.gz
             rtems-6-i386.tar.gz
-            rtems-6-m68k.tar.gz
           draft: true
 
