@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y ca-certificates
 
 COPY . /sb
 
+ARG VERSION
+ENV PATH=/opt/rtems/${VERSION}/bin:/usr/local/bin:/usr/bin:/bin:/sbin
+
 ARG ARCH
 ARG VERSION
 RUN /sb/setup-rtems.bash -a ${ARCH} -p /opt/rtems/${VERSION} -c && rm -rf /sb

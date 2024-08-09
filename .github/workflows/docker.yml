@@ -67,8 +67,10 @@ jobs:
           tags: ghcr.io/jjl772/rtems-6:${{ matrix.arch }}
           build-args: |
             ARCH=${{ matrix.arch }}
+            VERSION=${{ matrix.version }}
   tarball-publish:
     runs-on: ubuntu-latest
+    needs: 'docker-rtems-build'
     strategy:
       matrix:
         version: ['6']
