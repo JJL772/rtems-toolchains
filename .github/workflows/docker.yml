@@ -69,6 +69,7 @@ jobs:
             ARCH=${{ matrix.arch }}
   tarball-publish:
     runs-on: ubuntu-latest
+    needs: 'docker-rtems-build'
     strategy:
       matrix:
         version: ['6']
