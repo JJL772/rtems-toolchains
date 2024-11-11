@@ -80,10 +80,6 @@ jobs:
           ./get-tarball.sh -v ${{ matrix.version }} -t powerpc
           ./get-tarball.sh -v ${{ matrix.version }} -t i386
           ./get-tarball.sh -v ${{ matrix.version }} -t m68k
-          ./get-tarball.sh -v ${{ matrix.version }} -t arm
-          ./get-tarball.sh -v ${{ matrix.version }} -t aarch64
-          ./get-tarball.sh -v ${{ matrix.version }} -t sparc
-          ./get-tarball.sh -v ${{ matrix.version }} -t sparc64
       - name: Draft Release
         uses: softprops/action-gh-release@v2
         with:
@@ -92,9 +88,5 @@ jobs:
             rtems-${{ matrix.version }}-powerpc.tar.xz
             rtems-${{ matrix.version }}-i386.tar.xz
             rtems-${{ matrix.version }}-m68k.tar.xz
-            rtems-${{ matrix.version }}-arm.tar.xz
-            rtems-${{ matrix.version }}-aarch64.tar.xz
-            rtems-${{ matrix.version }}-sparc.tar.xz
-            rtems-${{ matrix.version }}-sparc64.tar.xz
           draft: true
 
