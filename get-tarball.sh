@@ -24,4 +24,4 @@ if [ -z "$TAG" ]; then
 	exit 1
 fi
 
-docker run --rm -u $(id -u):$(id -g) -v "$PWD":"$PWD" -w "$PWD" ghcr.io/jjl772/rtems-$VERSION:$TAG tar -C /opt/rtems/$VERSION -czvf rtems-$VERSION-$TAG.tar.gz .
+docker run --rm -u $(id -u):$(id -g) -v "$PWD":"$PWD" -w "$PWD" ghcr.io/jjl772/rtems-$VERSION:$TAG tar -C /opt/rtems/$VERSION -cJvf rtems-$VERSION-$TAG.tar.xz .
