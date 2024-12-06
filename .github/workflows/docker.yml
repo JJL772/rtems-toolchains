@@ -46,7 +46,7 @@ jobs:
       fail-fast: false
       matrix:
         version: ['6']
-        arch: ['powerpc', 'i386', 'm68k']
+        arch: ['powerpc', 'i386', 'm68k', 'arm', 'aarch64']
     steps:
       - uses: actions/checkout@v2
         with:
@@ -80,6 +80,8 @@ jobs:
           ./get-tarball.sh -v ${{ matrix.version }} -t powerpc
           ./get-tarball.sh -v ${{ matrix.version }} -t i386
           ./get-tarball.sh -v ${{ matrix.version }} -t m68k
+          ./get-tarball.sh -v ${{ matrix.version }} -t arm
+          ./get-tarball.sh -v ${{ matrix.version }} -t aarch64
       - name: Draft Release
         uses: softprops/action-gh-release@v2
         with:
@@ -88,5 +90,7 @@ jobs:
             rtems-${{ matrix.version }}-powerpc.tar.xz
             rtems-${{ matrix.version }}-i386.tar.xz
             rtems-${{ matrix.version }}-m68k.tar.xz
+            rtems-${{ matrix.version }}-arm.tar.xz
+            rtems-${{ matrix.version }}-aarch64.tar.xz
           draft: true
 

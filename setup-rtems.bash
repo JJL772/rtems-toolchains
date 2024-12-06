@@ -46,6 +46,12 @@ case $ARCH in
 	i386)
 		BSPS="i386/pc586"
 		;;
+	arm)
+		BSPS="arm/xilinx_zynq_a9_qemu"
+		;;
+	aarch64)
+		BSPS="aarch64/zynqmp_qemu"
+		;;
 	*)
 		echo "Unsupported arch"
 		exit 1
@@ -59,7 +65,7 @@ if [ ! -d rtems ]; then
 	git clone https://gitlab.rtems.org/rtems/rtos/rtems.git --recursive
 	cd rtems
 	# HACK: RTEMS upstream broke waf install (Aug 08, 2024)
-	git checkout e13236123ca8a6d7934b75aee03ba0c8bfb268ba
+	#git checkout e13236123ca8a6d7934b75aee03ba0c8bfb268ba
 else
 	cd rtems
 	git clean -ffdx .
