@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['6']
+        version: ['7']
         # NOTE: riscv and microblaze fail currently. Excluding them from the build as a result
         arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'sparc', 'sparc64', 'x86_64', 'mips', 'bfin', 'lm32', 'sh', 'v850', 'moxie', 'nios2', 'or1k']
     steps:
@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ghcr.io/jjl772/rtems-6-toolchains:${{ matrix.arch }}
+          tags: ghcr.io/jjl772/rtems-${{ matrix.version }}-toolchains:${{ matrix.arch }}
           build-args: |
             arch=${{ matrix.arch }}
             version=${{ matrix.version }}
@@ -45,7 +45,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['6']
+        version: ['7']
         arch: ['powerpc', 'i386', 'm68k', 'arm', 'aarch64']
     steps:
       - uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
         with:
           push: true
           file: Dockerfile.rtems
-          tags: ghcr.io/jjl772/rtems-6:${{ matrix.arch }}
+          tags: ghcr.io/jjl772/rtems-${{ matrix.version }}:${{ matrix.arch }}
           build-args: |
             ARCH=${{ matrix.arch }}
             VERSION=${{ matrix.version }}
@@ -71,7 +71,7 @@ jobs:
     needs: 'docker-rtems-build'
     strategy:
       matrix:
-        version: ['6']
+        version: ['7']
     steps:
       - uses: actions/checkout@v2
       - name: Download tarballs
