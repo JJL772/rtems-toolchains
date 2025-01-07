@@ -1,6 +1,7 @@
 
 ARG ARCH
-FROM ghcr.io/jjl772/rtems-6-toolchains:${ARCH}
+ARG VERSION
+FROM ghcr.io/jjl772/rtems-${VERSION}-toolchains:${ARCH}
 
 RUN apt-get update && apt-get install -y ca-certificates
 
