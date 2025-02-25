@@ -62,7 +62,7 @@ echo "Targeting BSPS: $BSPS"
 ############# RTEMS kernel ############# 
 
 if [ ! -d rtems ]; then
-	git clone https://gitlab.rtems.org/rtems/rtos/rtems.git --recursive
+	git clone https://gitlab.rtems.org/rtems/rtos/rtems.git --recursive -b 6
 	cd rtems
 	# HACK: RTEMS upstream broke waf install (Aug 08, 2024)
 	#git checkout e13236123ca8a6d7934b75aee03ba0c8bfb268ba
@@ -115,7 +115,7 @@ fi
 ############# RTEMS net services ############# 
 
 if [ ! -d rtems-net-services ]; then
-	git clone https://gitlab.rtems.org/rtems/pkg/rtems-net-services.git --recursive --depth=1
+	git clone https://gitlab.rtems.org/rtems/pkg/rtems-net-services.git --recursive --depth=1 -b 6
 	cd rtems-net-services
 else
 	cd rtems-net-services
