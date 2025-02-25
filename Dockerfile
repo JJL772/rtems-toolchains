@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:11-slim
 
 ARG version
 ARG arch
