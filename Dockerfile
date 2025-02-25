@@ -8,6 +8,8 @@ RUN apt-get install -y --no-install-recommends flex bison bzip2 unzip make xz-ut
 
 COPY . /sb
 
+RUN cd ./sb/rtems-source-builder && patch -p1 < ../gmp-url.patch && cd ..
+
 # Compile the thing.
 RUN cd /sb && mkdir -p /opt/rtems/${version} && /sb/rtems-source-builder/source-builder/sb-set-builder --prefix /opt/rtems/${version} ${version}/rtems-${arch}.bset --macros /sb/macros.mc && \
 	cd / && rm -rf /sb
