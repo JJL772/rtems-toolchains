@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'rtems-6'
 
 jobs:
   docker-toolchain-build:
