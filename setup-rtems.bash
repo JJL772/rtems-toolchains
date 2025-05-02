@@ -62,7 +62,7 @@ echo "Targeting BSPS: $BSPS"
 ############# RTEMS kernel ############# 
 
 if [ ! -d rtems ]; then
-	git clone https://gitlab.rtems.org/rtems/rtos/rtems.git --recursive -b base/6
+	git clone https://gitlab.rtems.org/rtems/rtos/rtems.git --recursive -b main
 	cd rtems
 else
 	cd rtems
@@ -93,7 +93,7 @@ fi
 
 if [ ! -d rtems-libbsd ]; then
 	# NOTE: Using shallow clone here because the .git folder in rtems-libbsd is 3.2G(!!!)
-	git clone https://gitlab.rtems.org/rtems/pkg/rtems-libbsd.git --recursive --depth=1 -b 6-freebsd-12
+	git clone https://gitlab.rtems.org/rtems/pkg/rtems-libbsd.git --recursive --depth=1 -b 7-freebsd-14
 	cd rtems-libbsd
 else
 	cd rtems-libbsd
