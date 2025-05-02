@@ -17,8 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         version: ['7']
-        # NOTE: riscv and microblaze fail currently. Excluding them from the build as a result
-        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'sparc', 'sparc64', 'x86_64', 'mips', 'bfin', 'lm32', 'sh', 'v850', 'moxie', 'nios2', 'or1k']
+        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'sparc', 'x86_64', 'mips', 'moxie', 'nios2', 'or1k', 'microblaze', 'riscv']
     steps:
       - uses: actions/checkout@v2
         with:
