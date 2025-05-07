@@ -42,6 +42,7 @@ case $ARCH in
 		;;
 	m68k)
 		BSPS="m68k/uC5282"
+		WANT_NET_LEGACY=1
 		;;
 	i386)
 		BSPS="i386/pc586"
@@ -89,25 +90,45 @@ if [ $CLEAN_AFTER_INSTALL -eq 1 ]; then
 	rm -rf rtems
 fi
 
-############# RTEMS libbsd ############# 
+############# RTEMS libbsd or net-legacy ############# 
 
-if [ ! -d rtems-libbsd ]; then
-	# NOTE: Using shallow clone here because the .git folder in rtems-libbsd is 3.2G(!!!)
-	git clone https://gitlab.rtems.org/rtems/pkg/rtems-libbsd.git --recursive --depth=1 -b 7-freebsd-14
-	cd rtems-libbsd
+if [ -z "$WANT_NET_LEGACY" ]; then
+	if [ ! -d rtems-libbsd ]; then
+		# NOTE: Using shallow clone here because the .git folder in rtems-libbsd is 3.2G(!!!)
+		git clone https://gitlab.rtems.org/rtems/pkg/rtems-libbsd.git --recursive --depth=1 -b 7-freebsd-14
+		cd rtems-libbsd
+	else
+		cd rtems-libbsd
+		git clean -ffdx .
+		git submodule update --init --recursive
+	fi
+
+	./waf configure --rtems-bsps="$BSPS" --rtems-tools="$TOOLS" --prefix="$PREFIX" --buildset buildset/default.ini
+
+	./waf build install
+
+	cd ..
+	if [ $CLEAN_AFTER_INSTALL -eq 1 ]; then
+		rm -rf rtems-libbsd
+	fi
 else
-	cd rtems-libbsd
-	git clean -ffdx .
-	git submodule update --init --recursive
-fi
+	if [ ! -d rtems-net-legacy ]; then
+		git clone https://gitlab.rtems.org/rtems/pkg/rtems-net-legacy.git --recursive --depth=1 -b main
+		cd rtems-net-legacy
+	else
+		cd rtems-net-legacy
+		git clean -ffdx .
+		git submodule update --init --recursive
+	fi
 
-./waf configure --rtems-bsps="$BSPS" --rtems-tools="$TOOLS" --prefix="$PREFIX" --buildset buildset/default.ini
+	./waf configure --rtems-bsps="$BSPS" --rtems-tools="$TOOLS" --prefix="$PREFIX"
 
-./waf build install
+	./waf build install
 
-cd ..
-if [ $CLEAN_AFTER_INSTALL -eq 1 ]; then
-	rm -rf rtems-libbsd
+	cd ..
+	if [ $CLEAN_AFTER_INSTALL -eq 1 ]; then
+		rm -rf rtems-net-legacy
+	fi
 fi
 
 ############# RTEMS net services ############# 
