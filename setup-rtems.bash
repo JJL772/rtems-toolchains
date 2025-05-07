@@ -120,11 +120,6 @@ else
 	git submodule update --init --recursive
 fi
 
-# Apply patches to rtems-net-services
-for p in ../patches/rtems-net-services/*.patch; do
-	git apply $p
-done
-
 ./waf configure --rtems-bsps="$BSPS" --rtems-tools="$TOOLS" --rtems="$PREFIX" --prefix="$PREFIX"
 
 ./waf build install
