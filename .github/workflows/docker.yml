@@ -38,39 +38,39 @@ jobs:
           build-args: |
             arch=${{ matrix.arch }}
             version=${{ matrix.version }}
-  docker-rtems-build:
-    runs-on: ubuntu-latest
-    needs: 'docker-toolchain-build'
-    permissions:
-      contents: read
-      packages: write
-    strategy:
-      fail-fast: false
-      matrix:
-        version: ['7']
-        arch: ['powerpc', 'i386', 'm68k', 'arm', 'aarch64']
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Login to GitHub
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build image
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          file: Dockerfile.rtems
-          tags: ghcr.io/jjl772/rtems-${{ matrix.version }}:${{ matrix.arch }}
-          build-args: |
-            ARCH=${{ matrix.arch }}
-            VERSION=${{ matrix.version }}
+  #docker-rtems-build:
+  #  runs-on: ubuntu-latest
+  #  needs: 'docker-toolchain-build'
+  #  permissions:
+  #    contents: read
+  #    packages: write
+  #  strategy:
+  #    fail-fast: false
+  #    matrix:
+  #      version: ['7']
+  #      arch: ['powerpc', 'i386', 'm68k', 'arm', 'aarch64']
+  #  steps:
+  #    - uses: actions/checkout@v2
+  #      with:
+  #        submodules: recursive
+  #    - name: Login to GitHub
+  #      uses: docker/login-action@v3
+  #      with:
+  #        registry: ghcr.io
+  #        username: ${{ github.actor }}
+  #        password: ${{ secrets.GITHUB_TOKEN }}
+  #    - name: Build image
+  #      uses: docker/build-push-action@v5
+  #      with:
+  #        push: true
+  #        file: Dockerfile.rtems
+  #        tags: ghcr.io/jjl772/rtems-${{ matrix.version }}:${{ matrix.arch }}
+  #        build-args: |
+  #          ARCH=${{ matrix.arch }}
+  #          VERSION=${{ matrix.version }}
   tarball-publish:
     runs-on: ubuntu-latest
-    needs: 'docker-rtems-build'
+    needs: 'docker-toolchain-build'
     strategy:
       matrix:
         version: ['7']
