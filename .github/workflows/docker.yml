@@ -19,7 +19,7 @@ jobs:
         version: ['7']
         # TODO: Microblaze still fails :(
         # TODO: risc-v runs out of disk space :(
-        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'sparc', 'x86_64', 'mips', 'moxie', 'nios2', 'or1k']
+        arch: ['powerpc', 'arm', 'i386', 'm68k', 'aarch64', 'sparc', 'x86_64', 'mips', 'moxie', 'nios2', 'or1k', 'riscv']
     steps:
       - uses: actions/checkout@v2
         with:
@@ -84,6 +84,13 @@ jobs:
           ./get-tarball.sh -v ${{ matrix.version }} -t m68k
           ./get-tarball.sh -v ${{ matrix.version }} -t arm
           ./get-tarball.sh -v ${{ matrix.version }} -t aarch64
+          ./get-tarball.sh -v ${{ matrix.version }} -t sparc
+          ./get-tarball.sh -v ${{ matrix.version }} -t x86_64
+          ./get-tarball.sh -v ${{ matrix.version }} -t mips
+          ./get-tarball.sh -v ${{ matrix.version }} -t moxie
+          ./get-tarball.sh -v ${{ matrix.version }} -t nios2
+          ./get-tarball.sh -v ${{ matrix.version }} -t or1k
+          ./get-tarball.sh -v ${{ matrix.version }} -t riscv
       - name: Draft Release
         uses: softprops/action-gh-release@v2
         with:
@@ -94,5 +101,12 @@ jobs:
             rtems-${{ matrix.version }}-m68k.tar.xz
             rtems-${{ matrix.version }}-arm.tar.xz
             rtems-${{ matrix.version }}-aarch64.tar.xz
+            rtems-${{ matrix.version }}-sparc.tar.xz
+            rtems-${{ matrix.version }}-x86_64.tar.xz
+            rtems-${{ matrix.version }}-mips.tar.xz
+            rtems-${{ matrix.version }}-moxie.tar.xz
+            rtems-${{ matrix.version }}-nios2.tar.xz
+            rtems-${{ matrix.version }}-or1k.tar.xz
+            rtems-${{ matrix.version }}-riscv.tar.xz
           draft: true
 
